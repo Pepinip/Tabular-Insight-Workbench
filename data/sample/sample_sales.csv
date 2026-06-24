@@ -1,0 +1,7 @@
+order_id,region,category,sales,profit,discount
+1,West,Technology,1200,240,0.10
+2,East,Furniture,850,90,0.15
+3,Central,Office Supplies,430,45,0.05
+4,West,Furniture,620,,0.20
+5,South,Technology,1500,310,0.00
+5,South,Technology,1500,310,0.00
