@@ -1,0 +1,18 @@
+2026-06-26 00:04:31,799 | INFO | app | Archivo cargado: generame una tabla con datos en español para gene... - generame una tabla con datos en español para gene....csv | 0.00 MB | hash: 6e687634d3ef
+2026-06-26 00:04:31,886 | INFO | app | Limpieza aplicada: ['missing_values_unchanged'] | filas: 15 -> 15 | columnas: 6 -> 6
+2026-06-26 00:04:35,317 | INFO | app | Archivo cargado: generame una tabla con datos en español para gene... - generame una tabla con datos en español para gene....csv | 0.00 MB | hash: 6e687634d3ef
+2026-06-26 00:04:35,406 | INFO | app | Limpieza aplicada: ['missing_values_unchanged'] | filas: 15 -> 15 | columnas: 6 -> 6
+2026-06-26 00:04:36,820 | INFO | app | Archivo cargado: generame una tabla con datos en español para gene... - generame una tabla con datos en español para gene....csv | 0.00 MB | hash: 6e687634d3ef
+2026-06-26 00:04:36,919 | INFO | app | Limpieza aplicada: ['missing_values_unchanged'] | filas: 15 -> 15 | columnas: 6 -> 6
+2026-06-26 00:04:39,147 | INFO | app | Archivo cargado: generame una tabla con datos en español para gene... - generame una tabla con datos en español para gene....csv | 0.00 MB | hash: 6e687634d3ef
+2026-06-26 00:04:39,220 | INFO | app | Limpieza aplicada: ['missing_values_unchanged'] | filas: 15 -> 15 | columnas: 6 -> 6
+2026-06-26 00:04:40,778 | INFO | app | Archivo cargado: generame una tabla con datos en español para gene... - generame una tabla con datos en español para gene....csv | 0.00 MB | hash: 6e687634d3ef
+2026-06-26 00:04:40,890 | INFO | app | Limpieza aplicada: ['drop_duplicates', 'drop_constant_columns', 'drop_rows_with_missing_values'] | filas: 15 -> 13 | columnas: 6 -> 6
+2026-06-26 00:04:51,606 | INFO | app | Archivo cargado: generame una tabla con datos en español para gene... - generame una tabla con datos en español para gene....csv | 0.00 MB | hash: 6e687634d3ef
+2026-06-26 00:04:51,714 | INFO | app | Limpieza aplicada: ['drop_duplicates', 'drop_constant_columns', 'drop_rows_with_missing_values'] | filas: 15 -> 13 | columnas: 6 -> 6
+2026-06-26 00:05:20,901 | INFO | app | Archivo cargado: generame una tabla con datos en español para gene... - generame una tabla con datos en español para gene....csv | 0.00 MB | hash: 6e687634d3ef
+2026-06-26 00:05:20,981 | INFO | app | Limpieza aplicada: ['drop_duplicates', 'drop_constant_columns', 'drop_rows_with_missing_values'] | filas: 15 -> 13 | columnas: 6 -> 6
+2026-06-26 00:05:21,145 | INFO | app | Analisis ejecutado | target=precio_miles_usd | features=['superficie_m2', 'habitaciones', 'antiguedad_anos', 'distancia_centro_km']
+2026-06-26 00:05:28,804 | INFO | app | Modelo entrenado | target=precio_miles_usd | R2=0.9453 | R2_adj=0.8905 | MAE=22.8824 | RMSE=24.2848 | features=['habitaciones']
+2026-06-26 00:05:28,804 | INFO | app | Identificadores excluidos del modelo: ['superficie_m2', 'antiguedad_anos', 'distancia_centro_km']
+2026-06-26 00:05:28,806 | WARNING | app | Target Leakage detectado: habitaciones correlaciona 0.96 con precio_miles_usd

@@ -16,6 +16,7 @@ from src.analysis import (
 )
 from src.cleaner import CleaningConfig, apply_cleaning
 from src.data_loader import DatasetLoadError, load_tabular_file
+from src.logger import logger
 from src.modeling import plot_predictions, plot_residuals, run_linear_regression, validate_inputs
 from src.profiler import build_profile
 from src.reporting import generate_executive_summary
@@ -136,6 +137,7 @@ def render_analysis_section(clean_df: pd.DataFrame) -> None:
 
     if st.button("Ejecutar analisis y modelo", type="primary"):
         st.session_state.analysis_running = True
+        logger.info(f"Analisis ejecutado | target={target} | features={features}")
 
     if not st.session_state.analysis_running:
         st.info("Selecciona el target y las predictoras, luego presiona el boton.")
@@ -176,15 +178,24 @@ def render_analysis_section(clean_df: pd.DataFrame) -> None:
         st.subheader("Regresion lineal")
         error_msg = validate_inputs(clean_df, target, features)
         if error_msg:
+            logger.warning(f"Validacion fallida: {error_msg}")
             st.error(error_msg)
         else:
             try:
                 result = run_linear_regression(clean_df, target, features)
+                logger.info(
+                    f"Modelo entrenado | target={result.target} | "
+                    f"R2={result.r2} | R2_adj={result.r2_adjusted} | "
+                    f"MAE={result.mae} | RMSE={result.rmse} | "
+                    f"features={result.features}"
+                )
             except ValueError as e:
+                logger.error(f"Error en regresion lineal: {e}")
                 st.error(f"❌ Error al entrenar el modelo: {e}")
                 st.stop()
 
             if result.excluded_identifiers:
+                logger.info(f"Identificadores excluidos del modelo: {result.excluded_identifiers}")
                 st.info(
                     f"🔍 Variables excluidas automaticamente por ser identificadores: "
                     f"`{'`, `'.join(result.excluded_identifiers)}`. "
@@ -193,6 +204,7 @@ def render_analysis_section(clean_df: pd.DataFrame) -> None:
 
             if result.leakage_warnings:
                 for feat, corr in result.leakage_warnings:
+                    logger.warning(f"Target Leakage detectado: {feat} correlaciona {corr} con {target}")
                     st.error(
                         f"🚨 **Target Leakage detectado:** `{feat}` correlaciona {corr} "
                         f"con `{target}`. Considera excluirla del modelo."
@@ -287,7 +299,13 @@ def main() -> None:
 
     try:
         loaded = load_dataset_cached(uploaded_file.name, file_bytes)
+        logger.info(
+            f"Archivo cargado: {uploaded_file.name} | "
+            f"{loaded.size_mb:.2f} MB | "
+            f"hash: {loaded.dataset_hash[:12]}"
+        )
     except DatasetLoadError as exc:
+        logger.error(f"Error cargando archivo '{uploaded_file.name}': {exc}")
         st.error(str(exc))
         return
 
@@ -308,6 +326,12 @@ def main() -> None:
         )
 
     clean_df, audit = apply_cleaning(raw_df, st.session_state.cleaning_config)
+    logger.info(
+        f"Limpieza aplicada: {audit.actions} | "
+        f"filas: {audit.rows_before} -> {audit.rows_after} | "
+        f"columnas: {audit.columns_before} -> {audit.columns_after}"
+    )
+
     clean_profile = build_profile(clean_df)
 
     st.subheader("Resumen del dataset")
