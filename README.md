@@ -109,29 +109,54 @@ python -m pytest tests/ -v
 
 ## Estructura del proyecto
 Tabular-Insight-Workbench/
+Tabular-Insight-Workbench/
+
 ├── app.py                  # Entrypoint principal de Streamlit
+
 ├── requirements.txt        # Dependencias del proyecto
+
 ├── conftest.py             # Configuracion global de pytest
+
 ├── src/
+
 │   ├── data_loader.py      # Carga y validacion de archivos
+
 │   ├── profiler.py         # Perfilado de calidad del dataset
+
 │   ├── cleaner.py          # Limpieza auditable
+
 │   ├── analysis.py         # EDA: correlacion, histogramas, scatter
+
 │   ├── modeling.py         # Regresion lineal, metricas, residuos
+
 │   ├── reporting.py        # Generacion de reportes TXT y DOCX
+
 │   └── logger.py           # Configuracion de logging
+
 ├── tests/
+
 │   ├── test_data_loader.py
+
 │   ├── test_profiler.py
+
 │   ├── test_cleaner.py
+
 │   ├── test_analysis.py
+
 │   └── test_modeling.py
+
 ├── data/
+
 │   └── sample/
+
 │       └── sample_sales.csv
+
 └── outputs/
+
 ├── figures/            # Graficas generadas
+
 ├── logs/               # Logs de sesion
+
 └── reports/            # Reportes guardados
 ---
 
