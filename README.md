@@ -19,16 +19,22 @@ Herramienta web de analisis de datos tabulares que permite cargar datasets CSV o
 ## Que hace
 CSV / Excel
 ↓
+
 Carga y validacion (hash SHA-256, limite 25MB)
 ↓
+
 Perfilado de calidad (nulos, duplicados, columnas constantes)
 ↓
+
 Limpieza auditable (reglas explicitas + registro de impacto)
 ↓
+
 Analisis exploratorio (correlacion, histogramas, scatter plots)
 ↓
+
 Modelo de regresion lineal (MAE, RMSE, R², R² ajustado, CV k-fold)
 ↓
+
 Reporte descargable (TXT y DOCX)
 ---
 
