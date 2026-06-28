@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from datetime import datetime
 
 import pandas as pd
 import streamlit as st
@@ -19,7 +20,7 @@ from src.data_loader import DatasetLoadError, load_tabular_file
 from src.logger import logger
 from src.modeling import plot_predictions, plot_residuals, run_linear_regression, validate_inputs
 from src.profiler import build_profile
-from src.reporting import generate_executive_summary
+from src.reporting import generate_docx_report, generate_executive_summary, generate_txt_report
 
 st.set_page_config(page_title="Tabular Insight Workbench", layout="wide")
 
@@ -100,7 +101,7 @@ def render_dataset_tabs(raw_df: pd.DataFrame, clean_df: pd.DataFrame, profile) -
             st.dataframe(profile.numeric_summary, use_container_width=True)
 
 
-def render_analysis_section(clean_df: pd.DataFrame) -> None:
+def render_analysis_section(clean_df: pd.DataFrame, audit, filename: str) -> None:
     st.divider()
     st.header("Analisis exploratorio y modelo")
 
@@ -253,8 +254,49 @@ def render_analysis_section(clean_df: pd.DataFrame) -> None:
                 model_result = run_linear_regression(clean_df, target, features)
             except ValueError:
                 pass
+
+        clean_profile = build_profile(clean_df)
         summary = generate_executive_summary(report, model_result)
         st.markdown(summary)
+
+        st.divider()
+        st.subheader("Descargar reporte")
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M")
+        col1, col2 = st.columns(2)
+
+        with col1:
+            txt_content = generate_txt_report(
+                filename=filename,
+                profile=clean_profile,
+                audit=audit,
+                report=report,
+                model_result=model_result,
+            )
+            st.download_button(
+                label="⬇️ Descargar TXT",
+                data=txt_content,
+                file_name=f"reporte_{target}_{timestamp}.txt",
+                mime="text/plain",
+            )
+
+        with col2:
+            try:
+                docx_bytes = generate_docx_report(
+                    filename=filename,
+                    profile=clean_profile,
+                    audit=audit,
+                    report=report,
+                    model_result=model_result,
+                )
+                st.download_button(
+                    label="⬇️ Descargar DOCX",
+                    data=docx_bytes,
+                    file_name=f"reporte_{target}_{timestamp}.docx",
+                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                )
+            except Exception as e:
+                logger.error(f"Error generando DOCX: {e}")
+                st.error(f"Error generando DOCX: {e}")
 
 
 def main() -> None:
@@ -350,7 +392,7 @@ def main() -> None:
         render_profile_metrics(raw_profile)
         st.dataframe(raw_profile.column_profile, use_container_width=True, hide_index=True)
 
-    render_analysis_section(clean_df)
+    render_analysis_section(clean_df, audit, loaded.filename)
 
 
 if __name__ == "__main__":
